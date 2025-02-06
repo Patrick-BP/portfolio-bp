@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+ 
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post('/', async (req, res) => {
       role: user.role,
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', {
+    const token = jwt.sign(payload, process.env.JWT_SECRET , {
       expiresIn: '7d',
     });
 

@@ -1,10 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const verifyToken = require('../middleware/auth');
 
 const router = express.Router();
 
-
+// Example of a protected route
+router.get('/protected', verifyToken, (req, res) => {
+    res.json({ 
+        message: 'This is a protected route',
+        user: req.user // Access the user data from the token
+    });
+});
 
 // Register a new user
 router.post('/', async (req, res) => {
@@ -65,4 +72,3 @@ router.get('/', async (req, res) => {
 
 
 module.exports = router;
-

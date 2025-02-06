@@ -1,10 +1,12 @@
-const  express = require('express') ;
-const  AboutMe = require('../models/AboutMe');
+const express = require('express');
+const multer = require('multer');
+const AboutMe = require('../models/AboutMe');
+const verifyToken = require('../middleware/auth');
 
 const router = express.Router();
 
 // Get all aboutMe
-router.get('/:id', async (req, res) => {
+router.get('/:id',verifyToken, async (req, res) => {
   try {
     const aboutMe = await AboutMe.findById(req.params.id);
     if (!aboutMe) {
@@ -17,7 +19,6 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create an aboutMe
-const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -30,7 +31,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/',verifyToken, upload.single('image'), async (req, res) => {
   const aboutMe = new AboutMe({
     name: req.body.name,
     Biography: req.body.Biography,
@@ -54,7 +55,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 });
 
 // Edit an aboutMe
-router.put('/:id', upload.single('image'), async (req, res) => {
+router.put('/:id',verifyToken, upload.single('image'), async (req, res) => {
   try {
     const aboutMe = await AboutMe.findById(req.params.id);
     if (!aboutMe) {
