@@ -12,6 +12,7 @@ import Projects from "@/pages/Projects";
 import Skills from "@/pages/Skills";
 import Contact from "@/pages/Contact";
 import NotFound from "@/pages/NotFound";
+import { DataContext, DataProvider } from "./contexts/DataContext";
 
 const queryClient = new QueryClient();
 
@@ -25,8 +26,9 @@ const App = () => (
     <TooltipProvider>
       <BrowserRouter>
         <AuthProvider>
-          <Toaster />
-          <Sonner />
+          <DataProvider>
+          <Toaster  />
+          <Sonner  />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route
@@ -48,6 +50,7 @@ const App = () => (
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </DataProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

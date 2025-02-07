@@ -6,13 +6,13 @@ const verifyToken = require('../middleware/auth');
 const router = express.Router();
 
 // Get all aboutMe
-router.get('/:id',verifyToken, async (req, res) => {
+router.get('/',verifyToken, async (req, res) => {
   try {
-    const aboutMe = await AboutMe.findById(req.params.id);
+    const aboutMe = await AboutMe.find();
     if (!aboutMe) {
       return res.status(404).json({ message: 'AboutMe not found' });
     }
-    res.json(aboutMe);
+    res.json(aboutMe[0]);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -34,7 +34,7 @@ const upload = multer({ storage: storage });
 router.post('/',verifyToken, upload.single('image'), async (req, res) => {
   const aboutMe = new AboutMe({
     name: req.body.name,
-    Biography: req.body.Biography,
+    biography: req.body.biography,
     introduction: req.body.introduction,
     title: req.body.title,
     imageUrl: req.file ? req.file.filename : '',
@@ -65,10 +65,11 @@ router.put('/:id',verifyToken, upload.single('image'), async (req, res) => {
       aboutMe.imageUrl = req.file.filename;
     }
     aboutMe.name = req.body.name;
-    aboutMe.Biography = req.body.Biography;
+    aboutMe.biography = req.body.biography;
     aboutMe.introduction = req.body.introduction;
     aboutMe.title = req.body.title;
-    aboutMe.location = req.body.location;
+    aboutMe.city = req.body.city;
+    aboutMe.state = req.body.state;
     aboutMe.email = req.body.email;
     aboutMe.phone = req.body.phone;
     aboutMe.githubUrl = req.body.githubUrl;
